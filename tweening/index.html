@@ -29,7 +29,7 @@ function create() {
     var item;
     for (var i = 0; i < 6; i++)
     {
-        item = game.add.sprite(190 + 69 * i, -100, 'amanda', i);
+        item = game.add.sprite(190 + 69 * i, 0, 'amanda', i);
         item.anchor.setTo(0.5,0.5);
         // Add a simple bounce tween to each character's position.
         game.add.tween(item).to({y: 240}, 2400, Phaser.Easing.Bounce.Out, true, 1000 + 400 * i, false);
