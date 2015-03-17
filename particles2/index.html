@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Okcjs Phaser Talk</title>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" />
+</head>
+
+<body>
+
+
+  <div id="phaser-example"></div>
+
+</body>
+<script src="../phaser.js"></script>
+<script>
+  var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', {
+    preload: preload,
+    create: create,
+    update: update
+  });
+  var sprite, particle, emitter;
+
+  function preload() {
+    game.load.image('fire', '../assets/sprites/flameparticle.png');
+    game.load.image('okcjs', '../assets/sprites/billymays_head.png')
+  }
+
+  function create() {
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    // create the sprite
+    sprite = game.add.sprite(game.width / 2, game.height / 2, 'okcjs');
+
+    // create the physics body -before- attaching an emitter to the sprite
+    game.physics.arcade.enableBody(sprite);
+    sprite.body.collideWorldBounds = true;
+    sprite.anchor.setTo(0.5, 0.5);
+
+    //create an emitter
+    emitter = game.add.emitter(0, 0, 3000);
+    emitter.makeParticles('fire');
+
+    // Attach the emitter to the sprite
+    sprite.addChild(emitter);
+
+    //position the emitter relative to the sprite's anchor location
+    emitter.y = 0;
+    emitter.x = -16;
+
+    // setup options for the emitter
+
+    emitter.setAlpha(0.5, 0.9, 1500, Phaser.Easing.Out);
+    emitter.setScale(0.5, 1, 0.5, 1, 750, Phaser.Easing.Out);
+    emitter.gravity = 10;
+
+    emitter.lifespan = 750;
+    emitter.maxParticleSpeed = new Phaser.Point(-100, 50);
+    emitter.minParticleSpeed = new Phaser.Point(-200, -50);
+  }
+
+  function update() {
+    sprite.rotation = game.physics.arcade.angleToPointer(sprite);
+    if (game.input.activePointer.isDown) {
+      game.physics.arcade.accelerateToPointer(sprite);
+      sprite.body.drag.setTo(0, 0);
+      // emit a single particle every frame that the mouse is down
+      emitter.emitParticle();
+    } else {
+      sprite.body.acceleration.set(0, 0);
+      sprite.body.drag.setTo(25, 25);
+    }
+  }
+</script>
+
+</html>

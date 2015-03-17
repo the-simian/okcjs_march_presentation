@@ -24,13 +24,13 @@
   var emitter;
 
   function preload() {
-    game.load.image('corona', '../assets/sprites/billymays_head.png');
+    game.load.image('billy', '../assets/sprites/billymays_head.png');
   }
 
   function create() {
     game.stage.backgroundColor = '#000000';
     emitter = game.add.emitter(game.world.centerX, 500, 200);
-    emitter.makeParticles('corona');
+    emitter.makeParticles('billy');
     emitter.setRotation(0, 0);
     emitter.setAlpha(0.3, 0.8);
     emitter.setScale(0.5, 1);
